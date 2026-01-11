@@ -1,13 +1,14 @@
 package com.bulletinboard.controller
 
-import com.bulletinboard.data.Message
 import com.bulletinboard.repository.MessageRepository
-import com.bulletinboard.repository.UserRepository
+import com.bulletinboard.repository.ReplyRepository
 import com.bulletinboard.service.MessageService
+import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/")
 @Controller
 class BulletinBoardController(
-    private val userRepository: UserRepository,
     private val messageRepository: MessageRepository,
     private val userService: UserService,
     private val messageService: MessageService,
+    private val replyRepository: ReplyRepository,
+    private val replyService: ReplyService,
 ) {
     @GetMapping("top")
     fun viewTop(model: Model): String {
@@ -35,5 +37,29 @@ class BulletinBoardController(
         val userId = userService.userCheck(name)
         messageService.messageSave(userId, title, message)
         return "redirect:/top"
+    }
+
+    @GetMapping("reply/{messageId}")
+    fun replyPage(
+        @PathVariable messageId: Int,
+        model: Model,
+    ): String {
+        model.addAttribute("parentMessage", messageRepository.replyMessage(messageId))
+        model.addAttribute("replyMessage", replyRepository.findByReplyMessage(messageId))
+        return "reply"
+    }
+
+    @PostMapping("reply/{messageId}")
+    fun postReply(
+        @PathVariable messageId: Int,
+        @RequestParam name: String,
+        @RequestParam reply: String,
+        model: Model,
+    ): String {
+        val userId = userService.userCheck(name)
+        replyService.replySave(userId, reply, messageId)
+        model.addAttribute("parentMessage", messageRepository.replyMessage(messageId))
+        model.addAttribute("replyMessage", replyRepository.findByReplyMessage(messageId))
+        return "redirect:/reply/{messageId}"
     }
 }

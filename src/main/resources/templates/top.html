@@ -123,6 +123,13 @@
             color: #666;
         }
 
+        .message-time {
+            font-size: 13px;
+            color: #666;
+            display: block;
+            text-align: right;
+        }
+
         .message-content {
             white-space: pre-wrap;
             line-height: 1.7;
@@ -214,13 +221,17 @@
     </div>
 
     <section>
-        <h2 class="section-title">投稿一覧 (<span id="messageCount">0</span>件)</h2>
+        <h2 class="section-title">投稿一覧 (<span id="messageCount" th:text="${message.size()}"></span>件)</h2>
         <div id="messageList" th:each="msg : ${message}" class="card">
             <div class="message-header">
                 <h3 class="message-title" th:text="${msg.title}"></h3>
                 <span class="message-meta" th:text="${msg.user.name}"></span>
             </div>
             <p class="message-content" th:text="${msg.message}"></p>
+            <span class="message-time" th:text="${msg.createdAt}"></span>
+            <span class="message-time">
+                <a th:href="@{reply/{id}(id=${msg.messageId})}">返信</a>
+            </span>
         </div>
     </section>
 </div>

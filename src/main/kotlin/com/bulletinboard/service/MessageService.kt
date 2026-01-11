@@ -3,6 +3,7 @@ package com.bulletinboard.service
 import com.bulletinboard.data.Message
 import com.bulletinboard.repository.MessageRepository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class MessageService(
@@ -19,6 +20,7 @@ class MessageService(
                 title = title,
                 message = message,
                 userId = id,
+                createdAt = LocalDateTime.now(),
                 user = null,
             ),
         )

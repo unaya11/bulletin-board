@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>hello,world</title>
+</head>
+<body>
+<p>hello,world</p>
+<p th:each="msg : ${message}">
+    <span th:text="${msg.message}"></span>
+    <span th:text="${msg.title}"></span>
+    <span th:text="${msg.user.name}"></span>
+    <span th:text="${msg.user.email}"></span>
+</p>
+<form action="main" method="post" class="form-example">
+    <div class="form-example">
+        <label for="name">name: </label>
+        <input type="text" name="name" id="name" required/>
+    </div>
+    <div class="form-example">
+        <label for="email">mail: </label>
+        <input type="email" name="email" id="email" required/>
+    </div>
+    <div class="form-example">
+        <input type="submit" value="登録"/>
+    </div>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="message : ${messageList}">
+            <td th:text="${message.id}"></td>
+            <td th:text="${message.name}"></td>
+            <td th:text="${message.email}"></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-description {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0052a3;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .message-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .message-meta {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .message-time {
+            font-size: 13px;
+            color: #666;
+            display: block;
+            text-align: right;
+        }
+
+        .message-content {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+            padding: 6px 12px;
+            width: auto;
+            font-size: 13px;
+        }
+
+        .delete-btn:hover {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background-color: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <meta charset="UTF-8">
+    <title>返信用ページ</title>
+</head>
+<body>
+<div class="container">
+<section>
+    <h2 class="section-title">投稿一覧 (件)</h2>
+    <div id="messageList" class="card">
+        <div class="message-header">
+            <h3 class="message-title" th:text="${parentMessage.title}"></h3>
+            <span class="message-meta" th:text="${parentMessage.user.name}"></span>
+        </div>
+        <p class="message-content" th:text="${parentMessage.message}"></p>
+        <span class="message-time" th:text="${parentMessage.createdAt}"></span>
+        <span class="message-time">
+            </span>
+    </div>
+</section>
+    <div id="replyList" th:each="reply : ${replyMessage}" class="card">
+        <div class="message-header">
+            <h3 class="message-title"></h3>
+                <!--    ユーザ名を入れる        -->
+            <span class="message-meta" th:text="${reply.user.name}"></span>
+        </div>
+        <p class="message-content" th:text="${reply.reply}"></p>
+<!--        <p class="message-content" th:text="${reply.name}"></p>-->
+<!--        Message(messageId=1, title=タイトル, message=テスト投稿 佐藤太郎に紐づけています, userId=1, createdAt=2021-05-30T15:47:13.395703, user=User(userId=1, name=佐藤太郎, email=taro.sato@example.com))-->
+        <span class="message-time" th:text="${reply.createdAt}"></span>
+        <span class="message-time">
+<!--                <a th:href="@{reply/{id}(id=${reply.messageId})}">返信</a>-->
+            </span>
+    </div>
+    <div class="card">
+        <h2 class="section-title">返信</h2>
+        <form th:action="@{/reply/{id}(id=${parentMessage.messageId})}" method="post"  id="messageForm">
+            <div class="form-group">
+                <label for="name">名前</label>
+                <input type="text" id="name" name="name" placeholder="あなたの名前" required>
+            </div>
+            <div class="form-group">
+                <label for="message">内容</label>
+                <textarea id="message" name="reply" placeholder="メッセージを入力してください" required></textarea>
+            </div>
+            <button type="submit">返信する</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -11,4 +11,7 @@ interface MessageRepository : JpaRepository<Message, Int> {
 //    @Query("SELECT m FROM Message AS m LEFT JOIN User AS u ON m.userid = u.userId")
     @Query("SELECT m FROM Message m LEFT JOIN m.user u")
     fun findMessage(): List<Message>
+
+    @Query("SELECT m FROM Message m LEFT JOIN m.user u WHERE m.messageId =:messageId")
+    fun replyMessage(messageId: Int): Message
 }

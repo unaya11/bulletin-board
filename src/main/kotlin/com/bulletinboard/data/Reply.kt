@@ -11,19 +11,22 @@ import jakarta.persistence.Table
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "message")
-data class Message(
+@Table(name = "reply")
+data class Reply(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val messageId: Int?,
-    @Column(length = 100, nullable = false)
-    val title: String = "",
+    val replyId: Int?,
     @Column(nullable = false)
-    val message: String = "",
+    val reply: String = "",
     @Column(name = "user_id", nullable = false)
     var userId: Int?,
     @Column(name = "created_at", nullable = false)
     var createdAt: LocalDateTime?,
+    @Column(name = "message_id", nullable = false)
+    var messageId: Int?,
+    @ManyToOne
+    @JoinColumn(name = "message_id", insertable = false, updatable = false, nullable = false)
+    val message: Message?,
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false, nullable = false)
     val user: User?,
