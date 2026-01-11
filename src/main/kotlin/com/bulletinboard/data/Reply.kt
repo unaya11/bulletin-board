@@ -24,7 +24,7 @@ data class Reply(
     val reply: String = "",
     @Column(name = "created_at", nullable = false)
     @CreatedDate
-    var createdAt: LocalDateTime?,
+    var createdAt: LocalDateTime? = null,
     @ManyToOne
     @JoinColumn(name = "message_id", nullable = false)
     var message: Message? = null,

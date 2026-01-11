@@ -26,7 +26,7 @@ data class Message(
     val message: String = "",
     @Column(name = "created_at", nullable = false)
     @CreatedDate
-    var createdAt: LocalDateTime?,
+    var createdAt: LocalDateTime? = null,
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     val user: User?,

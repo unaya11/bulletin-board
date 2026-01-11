@@ -5,7 +5,6 @@ import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.ReplyRepository
 import com.bulletinboard.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class ReplyService(
@@ -24,7 +23,6 @@ class ReplyService(
             Reply(
                 replyId = null,
                 reply = reply,
-                createdAt = null,
                 message = messageRepository.getReferenceById(messageId),
                 user = userRepository.getReferenceById(userId),
             ),

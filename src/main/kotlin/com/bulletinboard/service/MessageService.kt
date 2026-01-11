@@ -4,7 +4,6 @@ import com.bulletinboard.data.Message
 import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class MessageService(
@@ -26,7 +25,6 @@ class MessageService(
                 title = title,
                 message = message,
                 user = userRepository.getReferenceById(userId),
-                createdAt = null,
             ),
         )
     }
