@@ -24,7 +24,7 @@ class ReplyService(
             Reply(
                 replyId = null,
                 reply = reply,
-                createdAt = LocalDateTime.now(),
+                createdAt = null,
                 message = messageRepository.getReferenceById(messageId),
                 user = userRepository.getReferenceById(userId),
             ),

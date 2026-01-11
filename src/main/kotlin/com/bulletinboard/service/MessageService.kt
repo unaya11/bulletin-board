@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 @Service
 class MessageService(
     private val messageRepository: MessageRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     fun findAll(): List<Message> = messageRepository.findAllMessage()
 
@@ -26,7 +26,7 @@ class MessageService(
                 title = title,
                 message = message,
                 user = userRepository.getReferenceById(userId),
-                createdAt = LocalDateTime.now(),
+                createdAt = null,
             ),
         )
     }
