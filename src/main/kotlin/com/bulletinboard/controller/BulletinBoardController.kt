@@ -1,7 +1,5 @@
 package com.bulletinboard.controller
 
-import com.bulletinboard.repository.MessageRepository
-import com.bulletinboard.repository.ReplyRepository
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
@@ -16,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam
 @RequestMapping("/")
 @Controller
 class BulletinBoardController(
-    private val messageRepository: MessageRepository,
     private val userService: UserService,
     private val messageService: MessageService,
-    private val replyRepository: ReplyRepository,
     private val replyService: ReplyService,
 ) {
     @GetMapping("top")
     fun viewTop(model: Model): String {
-        model.addAttribute("message", messageRepository.findMessage())
+        model.addAttribute("message", messageService.findAll())
         return "top"
     }
 
@@ -44,8 +40,8 @@ class BulletinBoardController(
         @PathVariable messageId: Int,
         model: Model,
     ): String {
-        model.addAttribute("parentMessage", messageRepository.replyMessage(messageId))
-        model.addAttribute("replyMessage", replyRepository.findByReplyMessage(messageId))
+        model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
+        model.addAttribute("replyMessage", replyService.findByReplyMessage(messageId))
         return "reply"
     }
 
@@ -54,12 +50,9 @@ class BulletinBoardController(
         @PathVariable messageId: Int,
         @RequestParam name: String,
         @RequestParam reply: String,
-        model: Model,
     ): String {
         val userId = userService.userCheck(name)
         replyService.replySave(userId, reply, messageId)
-        model.addAttribute("parentMessage", messageRepository.replyMessage(messageId))
-        model.addAttribute("replyMessage", replyRepository.findByReplyMessage(messageId))
-        return "redirect:/reply/{messageId}"
+        return "redirect:/reply/$messageId"
     }
 }

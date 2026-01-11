@@ -197,7 +197,7 @@
             <span class="message-meta" th:text="${parentMessage.user.name}"></span>
         </div>
         <p class="message-content" th:text="${parentMessage.message}"></p>
-        <span class="message-time" th:text="${parentMessage.createdAt}"></span>
+        <span class="message-time" th:text="${#temporals.format(parentMessage.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
         <span class="message-time">
             </span>
     </div>
@@ -209,11 +209,8 @@
             <span class="message-meta" th:text="${reply.user.name}"></span>
         </div>
         <p class="message-content" th:text="${reply.reply}"></p>
-<!--        <p class="message-content" th:text="${reply.name}"></p>-->
-<!--        Message(messageId=1, title=タイトル, message=テスト投稿 佐藤太郎に紐づけています, userId=1, createdAt=2021-05-30T15:47:13.395703, user=User(userId=1, name=佐藤太郎, email=taro.sato@example.com))-->
-        <span class="message-time" th:text="${reply.createdAt}"></span>
+        <span class="message-time" th:text="${#temporals.format(reply.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
         <span class="message-time">
-<!--                <a th:href="@{reply/{id}(id=${reply.messageId})}">返信</a>-->
             </span>
     </div>
     <div class="card">

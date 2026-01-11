@@ -228,7 +228,7 @@
                 <span class="message-meta" th:text="${msg.user.name}"></span>
             </div>
             <p class="message-content" th:text="${msg.message}"></p>
-            <span class="message-time" th:text="${msg.createdAt}"></span>
+            <span class="message-time" th:text="${#temporals.format(msg.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
             <span class="message-time">
                 <a th:href="@{reply/{id}(id=${msg.messageId})}">返信</a>
             </span>
