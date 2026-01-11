@@ -20,11 +20,9 @@ data class Message(
     val title: String = "",
     @Column(nullable = false)
     val message: String = "",
-    @Column(name = "user_id", nullable = false)
-    var userId: Int?,
     @Column(name = "created_at", nullable = false)
     var createdAt: LocalDateTime?,
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     val user: User?,
 )

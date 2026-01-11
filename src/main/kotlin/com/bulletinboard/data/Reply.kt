@@ -18,16 +18,12 @@ data class Reply(
     val replyId: Int?,
     @Column(nullable = false)
     val reply: String = "",
-    @Column(name = "user_id", nullable = false)
-    var userId: Int?,
     @Column(name = "created_at", nullable = false)
     var createdAt: LocalDateTime?,
-    @Column(name = "message_id", nullable = false)
-    var messageId: Int?,
     @ManyToOne
-    @JoinColumn(name = "message_id", insertable = false, updatable = false, nullable = false)
-    val message: Message?,
+    @JoinColumn(name = "message_id", nullable = false)
+    var message: Message? = null,
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     val user: User?,
 )
