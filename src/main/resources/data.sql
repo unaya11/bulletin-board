@@ -3,12 +3,12 @@
 --    email VARCHAR(255) NOT NULL
 --);
 
-INSERT INTO user (name, email) VALUES
-('佐藤太郎', 'taro.sato@example.com'),
-('鈴木花子', 'hanako.suzuki@example.com'),
-('田中一郎', 'ichiro.tanaka@example.com'),
-('山田次郎', 'jiro.yamada@example.com'),
-('高橋美咲', 'misaki.takahashi@example.com');
+INSERT INTO user (name) VALUES
+('佐藤太郎'),
+('鈴木花子'),
+('田中一郎'),
+('山田次郎' ),
+('高橋美咲');
 
 INSERT INTO message (title, message, user_id, created_at) VALUES
 ('タイトル', 'テスト投稿 佐藤太郎に紐づけています', 1, '2021-05-30T15:47:13.395703');

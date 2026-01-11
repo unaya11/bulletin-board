@@ -12,9 +12,7 @@ import jakarta.persistence.Table
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val userId: Int?,
+    val userId: Int? = null,
     @Column(length = 100, nullable = false)
     val name: String = "",
-    @Column(length = 255, nullable = false)
-    val email: String = "",
 )

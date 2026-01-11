@@ -21,7 +21,6 @@ class MessageService(
     ) {
         messageRepository.save(
             Message(
-                messageId = null,
                 title = title,
                 message = message,
                 user = userRepository.getReferenceById(userId),

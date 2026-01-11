@@ -14,8 +14,6 @@ class UserService(
             userCheck ?: userRepository.save(
                 User(
                     name = name,
-                    email = "test",
-                    userId = null,
                 ),
             )
         return a.userId!!

@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 data class Reply(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val replyId: Int?,
+    val replyId: Int? = null,
     @Column(nullable = false)
     val reply: String = "",
     @Column(name = "created_at", nullable = false)

@@ -21,7 +21,6 @@ class ReplyService(
     ) {
         replyRepository.save(
             Reply(
-                replyId = null,
                 reply = reply,
                 message = messageRepository.getReferenceById(messageId),
                 user = userRepository.getReferenceById(userId),
