@@ -9,6 +9,10 @@ import java.time.LocalDateTime
 class MessageService(
     private val messageRepository: MessageRepository,
 ) {
+    fun findAll(): List<Message> = messageRepository.findAllMessage()
+
+    fun findByParentMessage(messageId: Int): Message = messageRepository.replyMessage(messageId)
+
     fun messageSave(
         id: Int,
         title: String,

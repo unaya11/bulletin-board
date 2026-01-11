@@ -9,6 +9,8 @@ import java.time.LocalDateTime
 class ReplyService(
     private val replyRepository: ReplyRepository,
 ) {
+    fun findByReplyMessage(messageId: Int): List<Reply> = replyRepository.findByReplyMessage(messageId)
+
     fun replySave(
         userId: Int,
         reply: String,
