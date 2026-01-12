@@ -9,13 +9,12 @@ class UserService(
     private val userRepository: UserRepository,
 ) {
     fun userCheck(name: String): Int {
-        val userCheck = userRepository.findByName(name)
-        val a =
-            userCheck ?: userRepository.save(
+        val user =
+            userRepository.findByName(name) ?: userRepository.save(
                 User(
                     name = name,
                 ),
             )
-        return a.userId!!
+        return user.userId!!
     }
 }
