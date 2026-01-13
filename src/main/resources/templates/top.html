@@ -230,7 +230,7 @@
             <p class="message-content" th:text="${msg.message}"></p>
             <span class="message-time" th:text="${#temporals.format(msg.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
             <span class="message-time">
-                <a th:href="@{reply/{id}(id=${msg.messageId})}">返信</a>
+                <a th:href="@{reply/{id}(id=${msg.messageId})}" th:text="'返信(' + ${msg.replies.size()} + '件)'"></a>
             </span>
         </div>
     </section>

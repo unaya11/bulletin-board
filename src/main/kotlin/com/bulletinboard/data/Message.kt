@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -30,4 +31,6 @@ data class Message(
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     val user: User?,
+    @OneToMany(mappedBy = "message")
+    val replies: MutableList<Reply> = mutableListOf(),
 )
