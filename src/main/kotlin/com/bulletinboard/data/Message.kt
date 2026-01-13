@@ -3,6 +3,7 @@ package com.bulletinboard.data
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -28,9 +29,9 @@ data class Message(
     @Column(name = "created_at", nullable = false)
     @CreatedDate
     var createdAt: LocalDateTime? = null,
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User?,
-    @OneToMany(mappedBy = "message")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "message")
     val replies: MutableList<Reply> = mutableListOf(),
 )

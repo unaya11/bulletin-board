@@ -9,7 +9,7 @@
 <body>
 <div class="container">
 <section>
-    <h2 class="section-title">返信一覧 (<span id="messageCount" th:text="${replyMessage.size()}"></span>件)</h2>
+    <h2 class="section-title">返信一覧 (<span id="messageCount" th:text="${parentMessage.replies.size()}"></span>件)</h2>
     <div id="messageList" class="card">
         <div class="message-header">
             <h3 class="message-title" th:text="${parentMessage.title}"></h3>
@@ -21,7 +21,7 @@
             </span>
     </div>
 </section>
-    <div id="replyList" th:each="reply : ${replyMessage}" class="card">
+    <div id="replyList" th:each="reply : ${parentMessage.replies}" class="card">
         <div class="message-header">
             <h3 class="message-title"></h3>
             <span class="message-meta" th:text="${reply.user.name}"></span>
