@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ReplyRepository : JpaRepository<Reply, Int> {
-    @Query("SELECT r FROM Reply r LEFT JOIN r.user u WHERE r.message.messageId =:messageId")
+    @Query("SELECT r FROM Reply r LEFT JOIN FETCH r.user u WHERE r.message.messageId =:messageId")
     fun findByReplyMessage(messageId: Int): List<Reply>
 }
