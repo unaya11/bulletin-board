@@ -41,7 +41,6 @@ class BulletinBoardController(
         model: Model,
     ): String {
         model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
-        model.addAttribute("replyMessage", replyService.findByReplyMessage(messageId))
         return "reply"
     }
 
