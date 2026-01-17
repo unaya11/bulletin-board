@@ -40,7 +40,7 @@ class BulletinBoardController(
         @PathVariable messageId: Int,
         model: Model,
     ): String {
-        model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
+        model.addAttribute("message", messageService.findByParentMessage(messageId))
         return "reply"
     }
 
