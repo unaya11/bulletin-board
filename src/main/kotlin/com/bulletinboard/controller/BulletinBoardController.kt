@@ -3,6 +3,7 @@ package com.bulletinboard.controller
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,8 +40,11 @@ class BulletinBoardController(
     fun replyPage(
         @PathVariable messageId: Int,
         model: Model,
+        pageable: Pageable,
     ): String {
-        model.addAttribute("message", messageService.findByParentMessage(messageId))
+        val replyMessage = replyService.findByReplyMessage(pageable, messageId)
+        model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
+        model.addAttribute("replyMessage", replyMessage)
         return "reply"
     }
 

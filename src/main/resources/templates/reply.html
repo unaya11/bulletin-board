@@ -4,27 +4,26 @@
     <meta charset="UTF-8">
     <link th:href="@{/style.css}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${message.title}"></title>
+    <title th:text="${parentMessage.title}"></title>
 </head>
 <body>
 <div class="container">
-<section>
-    <h2 class="section-title">返信一覧 (<span id="messageCount" th:text="${message.replies.size()}"></span>件)</h2>
-    <div id="messageList" class="card">
-        <div class="message-header">
-            <h3 class="message-title" th:text="${message.title}"></h3>
-            <span class="message-meta" th:text="${message.user.name}"></span>
-        </div>
-        <p class="message-content" th:text="${message.message}"></p>
-        <span class="message-time" th:text="${#temporals.format(message.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
-        <span class="message-time">
+    <section>
+        <h2 class="section-title">返信一覧 (<span id="messageCount" th:text="${replyMessage.totalElements}"></span>件)
+        </h2>
+        <div id="messageList" class="card">
+            <div class="message-header">
+                <h3 class="message-title" th:text="${parentMessage.title}"></h3>
+                <span class="message-meta" th:text="${parentMessage.user.name}"></span>
+            </div>
+            <p class="message-content" th:text="${parentMessage.message}"></p>
+            <span class="message-time"
+                  th:text="${#temporals.format(parentMessage.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
+            <span class="message-time">
             </span>
-    </div>
-    <div style="text-align: center;">
-        <a href="/top">TOP</a>
-    </div>
-</section>
-    <div id="replyList" th:each="reply : ${message.replies}" class="card">
+        </div>
+    </section>
+    <div id="replyList" th:each="reply : ${replyMessage}" class="card">
         <div class="message-header">
             <h3 class="message-title"></h3>
             <span class="message-meta" th:text="${reply.user.name}"></span>
@@ -34,9 +33,28 @@
         <span class="message-time">
             </span>
     </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/top">TOP</a>
+        <hr>
+        <span th:if="${not replyMessage.first}">
+            <a th:href="@{/reply/{id}(id=${parentMessage.messageId})}">最初へ</a>
+        </span>
+        <span th:if="${replyMessage.hasPrevious()}">
+            <a th:href="@{/reply/{id}(id=${parentMessage.messageId}, page=${replyMessage.number - 1})}">前へ</a>
+        </span>
+    <span style="margin: 0 15px;">
+        [[${replyMessage.number + 1}]] / [[${replyMessage.totalPages}]] ページ
+    </span>
+    <span th:if="${replyMessage.hasNext()}">
+            <a th:href="@{/reply/{id}(id=${parentMessage.messageId}, page=${replyMessage.number + 1})}">次へ</a>
+    </span>
+        <span th:if="${not replyMessage.last}">
+            <a th:href="@{/reply/{id}(id=${parentMessage.messageId}, page=${replyMessage.totalPages - 1})}">最後へ</a>
+        </span>
+    </div>
     <div class="card">
         <h2 class="section-title">返信</h2>
-        <form th:action="@{/reply/{id}(id=${message.messageId})}" method="post"  id="messageForm">
+        <form th:action="@{/reply/{id}(id=${parentMessage.messageId})}" method="post" id="messageForm">
             <div class="form-group">
                 <label for="name">名前</label>
                 <input type="text" id="name" name="name" placeholder="あなたの名前" required>
