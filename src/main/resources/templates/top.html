@@ -22,7 +22,7 @@
 
     <div class="card">
         <h2 class="section-title">新規投稿</h2>
-        <form action="top" method="post"  id="messageForm">
+        <form action="top" method="post" id="messageForm">
             <div class="form-group">
                 <label for="name">名前</label>
                 <input type="text" id="name" name="name" placeholder="あなたの名前" required>
@@ -39,8 +39,34 @@
         </form>
     </div>
 
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/top">TOP</a>
+        <hr>
+        <span th:if="${not message.first}">
+                <a th:href="@{/top}">最初へ</a>
+            </span>
+        <span th:if="${message.first}" style="color: gray;">最初へ</span>
+        <span th:if="${message.hasPrevious()}">
+                <a th:href="@{top (page=${message.number - 1})}">前へ</a>
+            </span>
+        <span th:if="${message.first}" style="color: gray;">前へ</span>
+
+        <span style="margin: 0 15px;">
+                [[${message.number + 1}]] / [[${message.totalPages}]] ページ
+            </span>
+
+        <span th:if="${message.hasNext()}">
+                <a th:href="@{top (page=${message.number + 1})}">次へ</a>
+            </span>
+        <span th:if="${message.last}" style="color: gray;">次へ</span>
+        <span th:if="${not message.last}">
+                <a th:href="@{/top (page=${message.totalPages - 1})}">最後へ</a>
+            </span>
+        <span th:if="${message.last}" style="color: gray;">最後へ</span>
+    </div>
+
     <section>
-        <h2 class="section-title">投稿一覧 (<span id="messageCount" th:text="${message.size()}"></span>件)</h2>
+        <h2 class="section-title">投稿一覧 (<span id="messageCount" th:text="${message.totalElements}"></span>件)</h2>
         <div id="messageList" th:each="msg : ${message}" class="card">
             <div class="message-header">
                 <h3 class="message-title" th:text="${msg.title}"></h3>
