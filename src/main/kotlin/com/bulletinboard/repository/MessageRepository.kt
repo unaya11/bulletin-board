@@ -18,4 +18,12 @@ interface MessageRepository : JpaRepository<Message, Int> {
         "SELECT m FROM Message m LEFT JOIN FETCH m.user u LEFT JOIN FETCH m.replies r LEFT JOIN FETCH r.user WHERE m.messageId =:messageId",
     )
     fun replyMessage(messageId: Int): Message
+
+    @Query(
+        "SELECT m FROM Message m LEFT JOIN FETCH m.user u LEFT JOIN FETCH m.replies r LEFT JOIN FETCH r.user WHERE m.message LIKE %:keyword% OR r.reply LIKE %:keyword% order by m.createdAt DESC",
+    )
+    fun findSearchMessage(
+        keyword: String,
+        pageable: Pageable,
+    ): Page<Message>
 }

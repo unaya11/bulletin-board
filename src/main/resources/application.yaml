@@ -23,3 +23,7 @@ spring:
     init:
       encoding: UTF-8
       data-locations: classpath:data.sql
+      # ? の中身（バインドパラメータ）を表示する
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
