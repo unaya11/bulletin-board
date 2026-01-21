@@ -20,7 +20,10 @@ class BulletinBoardController(
     private val replyService: ReplyService,
 ) {
     @GetMapping("top")
-    fun viewTop(model: Model, pageable: Pageable,): String {
+    fun viewTop(
+        model: Model,
+        pageable: Pageable,
+    ): String {
         val message = messageService.findAll(pageable)
         model.addAttribute("message", message)
         return "top"
