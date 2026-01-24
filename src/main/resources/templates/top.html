@@ -19,7 +19,13 @@
     </header>
 
     <div id="notification"></div>
-
+    <form action="search" method="get" id="searchForm">
+    <div class="form-group">
+        <label for="message">内容</label>
+        <label for="keyword"></label><textarea id="keyword" name="keyword" placeholder="キーワード検索" required></textarea>
+    </div>
+    <button type="submit">検索する</button>
+    </form>
     <div class="card">
         <h2 class="section-title">新規投稿</h2>
         <form action="top" method="post" id="messageForm">

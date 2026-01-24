@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${keyword} + の検索結果"></title>
+</head>
+<body>
+<div class="container">
+    <h2 class="section-title" th:text="${keyword} + ' の検索結果一覧 (' + ${search.totalElements} + ' 件)'"></h2>
+<!--&lt;!&ndash;    <header>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<h3 class="message-title" th:text="${test}"></h3>&ndash;&gt;-->
+<!--    </header>-->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/top">TOP</a>
+        <hr>
+        <span th:if="${not search.first}">
+                <a th:href="@{search (keyword=${keyword})}">最初へ</a>
+            </span>
+        <span th:if="${search.first}" style="color: gray;">最初へ</span>
+        <span th:if="${search.hasPrevious()}">
+                <a th:href="@{search (keyword=${keyword}, page=${search.number - 1})}">前へ</a>
+            </span>
+        <span th:if="${search.first}" style="color: gray;">前へ</span>
+
+        <span style="margin: 0 15px;">
+                [[${search.number + 1}]] / [[${search.totalPages}]] ページ
+            </span>
+
+        <span th:if="${search.hasNext()}">
+                <a th:href="@{search (keyword=${keyword}, page=${search.number + 1})}">次へ</a>
+            </span>
+        <span th:if="${search.last}" style="color: gray;">次へ</span>
+        <span th:if="${not search.last}">
+                <a th:href="@{search (keyword=${keyword}, page=${search.totalPages - 1})}">最後へ</a>
+            </span>
+        <span th:if="${search.last}" style="color: gray;">最後へ</span>
+    </div>
+<section>
+    <div id="messageList" th:each="search : ${search}" class="card">
+        <div class="message-header">
+            <h3 class="message-title" th:text="${search.title}"></h3>
+            <span class="message-meta" th:text="${search.user.name}"></span>
+        </div>
+        <p class="message-content" th:text="${search.message}"></p>
+        <span class="message-time" th:text="${#temporals.format(search.createdAt, 'yyyy/MM/dd HH:mm:ss')}"></span>
+    </div>
+</section>
+</div>
+</body>
+</html>

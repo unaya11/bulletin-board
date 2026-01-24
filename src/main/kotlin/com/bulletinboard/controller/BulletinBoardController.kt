@@ -63,14 +63,15 @@ class BulletinBoardController(
         return "redirect:/reply/$messageId"
     }
 
-    @GetMapping("search/{keyword}")
+    @GetMapping("search")
     fun search(
-        @PathVariable keyword: String,
+        @RequestParam("keyword") keyword: String,
         model: Model,
         pageable: Pageable,
     ): String {
         val messageSearch = messageService.messageSearch(keyword, pageable)
         model.addAttribute("search", messageSearch)
+        model.addAttribute("keyword", keyword)
         return "search"
     }
 }
