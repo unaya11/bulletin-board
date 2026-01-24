@@ -16,6 +16,11 @@ class MessageService(
 
     fun findByParentMessage(messageId: Int): Message = messageRepository.replyMessage(messageId)
 
+    fun messageSearch(
+        keyword: String,
+        pageable: Pageable,
+    ): Page<Message> = messageRepository.findSearchMessage(keyword, pageable)
+
     fun messageSave(
         userId: Int,
         title: String,
