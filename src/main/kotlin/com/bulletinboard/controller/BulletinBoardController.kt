@@ -69,7 +69,7 @@ class BulletinBoardController(
         model: Model,
         pageable: Pageable,
     ): String {
-        val messageSearch = messageService.messageSearch(keyword, pageable)
+        val messageSearch = messageService.messageSearch(pageable, keyword)
         model.addAttribute("search", messageSearch)
         model.addAttribute("keyword", keyword)
         return "search"
