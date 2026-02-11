@@ -1,8 +1,14 @@
 package com.bulletinboard.controller
 
+import com.bulletinboard.common.TestUtils.Companion.mockPage
+import com.bulletinboard.common.TestUtils.Companion.testId
+import com.bulletinboard.common.TestUtils.Companion.testMessage
+import com.bulletinboard.common.TestUtils.Companion.testMessageDate
+import com.bulletinboard.common.TestUtils.Companion.testMessageId
+import com.bulletinboard.common.TestUtils.Companion.testName
+import com.bulletinboard.common.TestUtils.Companion.testTitle
 import com.bulletinboard.data.Message
 import com.bulletinboard.data.Reply
-import com.bulletinboard.data.User
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
@@ -13,9 +19,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
@@ -25,7 +28,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
-import java.time.LocalDateTime
 
 @WebMvcTest(BulletinBoardController::class)
 class BulletinBoardControllerTest {
@@ -40,24 +42,6 @@ class BulletinBoardControllerTest {
 
     @MockitoBean
     private lateinit var mockReplyService: ReplyService
-
-    val testId = 100
-    val testName = "testName"
-    val testTitle = "testTitle"
-    val testMessage = "testMessage"
-    val testMessageId = 200
-    val testUser = User()
-    val testMessageDate =
-        Message(
-            messageId = testMessageId,
-            title = testTitle,
-            message = testMessage,
-            createdAt = LocalDateTime.now(),
-            user = testUser,
-            replies = mutableListOf(),
-        )
-
-    fun <T : Any> mockPage(): Page<T> = PageImpl(emptyList(), PageRequest.of(0, 1), 0)
 
     @Test
     fun `正常系_topページに遷移できること`() {
