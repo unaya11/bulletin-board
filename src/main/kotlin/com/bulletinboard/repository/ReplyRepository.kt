@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ReplyRepository : JpaRepository<Reply, Int> {
-    @Query("SELECT r FROM Reply r LEFT JOIN FETCH r.user u WHERE r.message.messageId =:messageId ORDER BY r.createdAt DESC")
+    @Query(
+        "SELECT r FROM Reply r LEFT JOIN FETCH r.user u WHERE r.message.messageId =:messageId ORDER BY r.createdAt DESC",
+    )
     fun findByReplyMessage(
         pageable: Pageable,
         messageId: Int,
