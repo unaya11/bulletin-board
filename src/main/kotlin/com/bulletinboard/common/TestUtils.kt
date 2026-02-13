@@ -48,6 +48,7 @@ class TestUtils {
 
         fun <T : Any> mockPage(): Page<T> = PageImpl(emptyList(), PageRequest.of(0, 1), 0)
 
-        fun originalPage(): PageImpl<Reply> = PageImpl(listOf(mockReply1, mockReply2), PageRequest.of(0, 1), 0)
+        fun originalPage(): PageImpl<Reply> =
+            PageImpl(listOf(mockReply1, mockReply2), PageRequest.of(0, 1), 0)
     }
 }

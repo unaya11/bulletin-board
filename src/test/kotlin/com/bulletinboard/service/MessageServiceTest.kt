@@ -55,7 +55,9 @@ class MessageServiceTest {
 
     @Test
     fun `キーワード検索ができること`() {
-        whenever(mockMessageRepository.findSearchMessage(eq(testSearchKeyWord), any<Pageable>())).thenReturn(mockPage())
+        whenever(
+            mockMessageRepository.findSearchMessage(eq(testSearchKeyWord), any<Pageable>()),
+        ).thenReturn(mockPage())
         messageService.messageSearch(testPage, testSearchKeyWord)
 
         verify(mockMessageRepository).findSearchMessage(testSearchKeyWord, testPage)
@@ -64,7 +66,8 @@ class MessageServiceTest {
     @Test
     fun `メッセージが保存できること`() {
         val captor = argumentCaptor<Message>()
-        whenever(mockUserRepository.getReferenceById(testId)).thenReturn(testUser)
+        whenever(mockUserRepository.getReferenceById(testId))
+            .thenReturn(testUser)
         messageService.messageSave(testId, testTitle, testMessage)
 
         verify(mockMessageRepository).save(captor.capture())

@@ -59,7 +59,9 @@ class BulletinBoardControllerTest {
 
         mockMvc
             .perform(
-                post("/top").param("name", testName).param("title", testTitle).param("message", testMessage),
+                post(
+                    "/top",
+                ).param("name", testName).param("title", testTitle).param("message", testMessage),
             ).andExpect(status().isFound)
             .andExpect(redirectedUrl("/top"))
 
@@ -99,7 +101,9 @@ class BulletinBoardControllerTest {
 
     @Test
     fun `検索ページに遷移できること`() {
-        whenever(mockMessageService.messageSearch(any<Pageable>(), eq(testMessage))).thenReturn(mockPage())
+        whenever(
+            mockMessageService.messageSearch(any<Pageable>(), eq(testMessage)),
+        ).thenReturn(mockPage())
         mockMvc
             .perform(
                 get("/search").param("keyword", testMessage),

@@ -43,7 +43,9 @@ class ReplyServiceTest {
 
     @Test
     fun `返信が取得でき、中身が反転されていること`() {
-        whenever(mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageId))).thenReturn(originalPage())
+        whenever(
+            mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageId)),
+        ).thenReturn(originalPage())
         val result = replyService.findByReplyMessage(testPage, testMessageId)
         assertEquals(mockReply1, result.content[1])
         assertEquals(mockReply2, result.content[0])
