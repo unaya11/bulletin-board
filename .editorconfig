@@ -1,48 +1,7 @@
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
-charset = utf-8
-end_of_line = lf
 insert_final_newline = true
 
-[*.kt]
-# 1. 削除ルールを明示的に「有効」にする（no- を含む最新の正確な名前）
-ktlint_standard_no-unused-imports = enabled
-# 2. 旧プロパティ名も念のため併記する（プラグインのバージョン対策）
-ktlint_standard_unused-import = enabled
-# 3. 並び替えルール（これは現在動いているはずですが、念のため）
+[*.{kt,kts}]
 ktlint_standard_import-ordering = enabled
-# 4. コンマの後のスペース、演算子の前後のスペースを強制
-# a+b ではなく a + b となるようにし、数式や論理式を読みやすくします
-ktlint_standard_spacing-around-operators = enabled
-
-# 5. 引数リストやリスト定義の最後のコンマ（Trailing Comma）
-# これを有効にすると、引数を増やした時のデフ（差分）が1行で済み、Git管理が美しくなります
-ktlint_standard_trailing-comma-on-call_site = enabled
-ktlint_standard_trailing-comma-on-declaration_site = enabled
-
-# 6. 波括弧 { } の位置を統一
-# クラスや関数の開始中括弧の前のスペースや、改行位置の揺れを自動で直します
-ktlint_standard_curly-spacing = enabled
-
-# 7. 文字列テンプレートの波括弧を最適化
-# "${name}" ではなく "$name" で済む場合は自動で削り、ノイズを減らします
-ktlint_standard_string-template = enabled
-# メソッドチェーン（.then...など）の改行位置を制御
-# これを enabled にすることで、複雑な呼び出しの改行ルールを適用します
-ktlint_standard_chain-wrapping = enabled
-
-# 1行の最大文字数（前回の提案にも入れましたが、これが基準になります）
-# これを超えると、.thenReturn が自動的に次の行に送られます
-max_line_length = 100
-
-# 引数リストが長い場合に改行を強制（wheneverの中身が長い場合に有効）
-ktlint_standard_parameter-list-wrapping = enabled
-
-[*.kts]
-max_line_length = 100
-# 改行を強制するルールを .kts だけオフにする
-ktlint_standard_argument-list-wrapping = disabled
-ktlint_standard_function-signature = disabled
