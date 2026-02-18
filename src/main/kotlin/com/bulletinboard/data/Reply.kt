@@ -10,6 +10,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
@@ -21,7 +23,9 @@ data class Reply(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val replyId: Int? = null,
-    @Column(nullable = false)
+    @field:NotBlank
+    @field:Size(max = 400)
+    @Column(length = 400, nullable = false)
     val reply: String = "",
     @Column(name = "created_at", nullable = false)
     @CreatedDate

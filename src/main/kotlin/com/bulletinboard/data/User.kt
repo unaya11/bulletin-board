@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "user")
@@ -13,6 +15,8 @@ data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val userId: Int? = null,
+    @field:NotBlank
+    @field:Size(max = 400)
     @Column(length = 100, nullable = false)
     val name: String = "",
 )
