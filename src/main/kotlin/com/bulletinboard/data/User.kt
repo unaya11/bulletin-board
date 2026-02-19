@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size
 
 @Entity
 @Table(name = "user")
-data class User(
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val userId: Int? = null,

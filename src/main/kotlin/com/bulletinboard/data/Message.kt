@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "message")
 @EntityListeners(AuditingEntityListener::class)
-data class Message(
+class Message(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val messageId: Int? = null,
