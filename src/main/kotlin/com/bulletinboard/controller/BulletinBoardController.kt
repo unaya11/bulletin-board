@@ -5,6 +5,7 @@ import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
+import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -34,7 +35,7 @@ class BulletinBoardController(
 
     @PostMapping("top")
     fun postForm(
-        @ModelAttribute postForm: PostForm,
+        @Valid @ModelAttribute postForm: PostForm,
     ): String {
         val userId = userService.userCheck(postForm.name)
         messageService.messageSave(userId, postForm.title, postForm.message)
@@ -56,7 +57,7 @@ class BulletinBoardController(
     @PostMapping("reply/{messageId}")
     fun postReply(
         @PathVariable messageId: Int,
-        @ModelAttribute replyForm: ReplyForm,
+        @Valid @ModelAttribute replyForm: ReplyForm,
     ): String {
         val userId = userService.userCheck(replyForm.name)
         replyService.replySave(userId, replyForm.reply, messageId)
