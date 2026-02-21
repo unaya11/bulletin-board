@@ -1,5 +1,7 @@
 package com.bulletinboard.controller
 
+import com.bulletinboard.form.PostForm
+import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
@@ -7,6 +9,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -31,12 +34,10 @@ class BulletinBoardController(
 
     @PostMapping("top")
     fun postForm(
-        @RequestParam name: String,
-        @RequestParam title: String,
-        @RequestParam message: String,
+        @ModelAttribute postForm: PostForm,
     ): String {
-        val userId = userService.userCheck(name)
-        messageService.messageSave(userId, title, message)
+        val userId = userService.userCheck(postForm.name)
+        messageService.messageSave(userId, postForm.title, postForm.message)
         return "redirect:/top"
     }
 
@@ -55,11 +56,10 @@ class BulletinBoardController(
     @PostMapping("reply/{messageId}")
     fun postReply(
         @PathVariable messageId: Int,
-        @RequestParam name: String,
-        @RequestParam reply: String,
+        @ModelAttribute replyForm: ReplyForm,
     ): String {
-        val userId = userService.userCheck(name)
-        replyService.replySave(userId, reply, messageId)
+        val userId = userService.userCheck(replyForm.name)
+        replyService.replySave(userId, replyForm.reply, messageId)
         return "redirect:/reply/$messageId"
     }
 
