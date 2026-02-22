@@ -83,6 +83,8 @@ jobs:
                 body: `📝 [テストレポートはこちらからダウンロードおよびindex.htmlから閲覧可能です](${artifactUrl})`
             });
             }
+      - name: Find test results
+        run: find . -name "*.xml" | grep test-results
       # Gradleのテスト結果(XML)を読み取ってActionsのSummaryに表示する
       - name: Test Summary
         uses: test-summary/action@v2
