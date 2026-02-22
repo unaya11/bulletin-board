@@ -11,6 +11,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
@@ -18,13 +20,17 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "message")
 @EntityListeners(AuditingEntityListener::class)
-data class Message(
+class Message(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val messageId: Int? = null,
-    @Column(length = 100, nullable = false)
+    @field:NotBlank
+    @field:Size(max = 20)
+    @Column(length = 20, nullable = false)
     val title: String = "",
-    @Column(nullable = false)
+    @field:NotBlank
+    @field:Size(max = 400)
+    @Column(length = 400, nullable = false)
     val message: String = "",
     @Column(name = "created_at", nullable = false)
     @CreatedDate
