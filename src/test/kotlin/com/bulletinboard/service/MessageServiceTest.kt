@@ -68,7 +68,7 @@ class MessageServiceTest {
         val captor = argumentCaptor<Message>()
         whenever(mockUserRepository.getReferenceById(testId))
             .thenReturn(testUser)
-        messageService.messageSave(testId, testTitle, testMessage)
+        messageService.messageSave(2, testTitle, testMessage)
 
         verify(mockMessageRepository).save(captor.capture())
         assertEquals(testUser, captor.firstValue.user)
