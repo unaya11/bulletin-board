@@ -178,3 +178,6 @@ button:active {
     border-radius: 6px;
     margin-bottom: 20px;
 }
+.error-text {
+    color: #dc3545;
+}

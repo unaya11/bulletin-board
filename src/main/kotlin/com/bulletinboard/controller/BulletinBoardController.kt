@@ -1,6 +1,6 @@
 package com.bulletinboard.controller
 
-import com.bulletinboard.form.PostForm
+import com.bulletinboard.form.MessageForm
 import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
@@ -9,6 +9,7 @@ import jakarta.validation.Valid
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,6 +26,7 @@ class BulletinBoardController(
 ) {
     @GetMapping("top")
     fun viewTop(
+        @ModelAttribute messageForm: MessageForm,
         model: Model,
         pageable: Pageable,
     ): String {
@@ -35,16 +37,25 @@ class BulletinBoardController(
 
     @PostMapping("top")
     fun postForm(
-        @Valid @ModelAttribute postForm: PostForm,
+        @Valid @ModelAttribute messageForm: MessageForm,
+        bindingResult: BindingResult,
+        model: Model,
+        pageable: Pageable,
     ): String {
-        val userId = userService.userCheck(postForm.name)
-        messageService.messageSave(userId, postForm.title, postForm.message)
+        if (bindingResult.hasErrors()) {
+            val message = messageService.findAll(pageable)
+            model.addAttribute("message", message)
+            return "top"
+        }
+        val userId = userService.userCheck(messageForm.name)
+        messageService.messageSave(userId, messageForm.title, messageForm.message)
         return "redirect:/top"
     }
 
     @GetMapping("reply/{messageId}")
     fun replyPage(
         @PathVariable messageId: Int,
+        @ModelAttribute replyForm: ReplyForm,
         model: Model,
         pageable: Pageable,
     ): String {
@@ -58,7 +69,16 @@ class BulletinBoardController(
     fun postReply(
         @PathVariable messageId: Int,
         @Valid @ModelAttribute replyForm: ReplyForm,
+        bindingResult: BindingResult,
+        model: Model,
+        pageable: Pageable,
     ): String {
+        if (bindingResult.hasErrors()) {
+            val replyMessage = replyService.findByReplyMessage(pageable, messageId)
+            model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
+            model.addAttribute("replyMessage", replyMessage)
+            return "reply"
+        }
         val userId = userService.userCheck(replyForm.name)
         replyService.replySave(userId, replyForm.reply, messageId)
         return "redirect:/reply/$messageId"
