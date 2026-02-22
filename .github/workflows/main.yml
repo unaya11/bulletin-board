@@ -83,3 +83,9 @@ jobs:
                 body: `📝 [テストレポートはこちらからダウンロードおよびindex.htmlから閲覧可能です](${artifactUrl})`
             });
             }
+      # Gradleのテスト結果(XML)を読み取ってActionsのSummaryに表示する
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "build/test-results/test/*.xml"
+        if: always()
