@@ -86,8 +86,9 @@ jobs:
       - name: Find test results
         run: find . -name "*.xml" | grep test-results
       # Gradleのテスト結果(XML)を読み取ってActionsのSummaryに表示する
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "**/TEST-*.xml"
+      - name: Test Summary (Alternative)
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
+        with:
+          # find の結果に合わせて、より広く確実に指定
+          files: "build/test-results/test/*.xml"
