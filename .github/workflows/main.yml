@@ -2,6 +2,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
+  checks: write
 
 name: bulletin-board-test
 
@@ -63,21 +64,13 @@ jobs:
           name: unit-test-reports
           path: build/reports/tests/test/
 
+      - name: Find test results
+        run: find . -name "*.xml" | grep test-results
+      # Gradleのテスト結果(XML)を読み取ってActionsのSummaryに表示する
 
-      # PRのコメントにレポートのダウンロードリンクが記載のページへのリンクを追加
-      - name: Comment artifact link on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+      - name: Test Summary (Alternative)
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          script: |
-            const pr = context.payload.pull_request?.number;
-            if (pr) {
-            const runId = process.env.GITHUB_RUN_ID;
-            const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-            github.rest.issues.createComment({
-                issue_number: pr,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `📝 [テストレポートはこちらからダウンロードおよびindex.htmlから閲覧可能です](${artifactUrl})`
-            });
-            }
+          # find の結果に合わせて、より広く確実に指定
+          files: "build/test-results/test/*.xml"
