@@ -1,6 +1,8 @@
 package com.bulletinboard.service
 
 import com.bulletinboard.data.Message
+import com.bulletinboard.data.User
+import com.bulletinboard.form.MessageForm
 import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.UserRepository
 import org.springframework.data.domain.Page
@@ -22,15 +24,14 @@ class MessageService(
     ): Page<Message> = messageRepository.findSearchMessage(keyword, pageable)
 
     fun messageSave(
-        userId: Int,
-        title: String,
-        message: String,
+        user: User,
+        messageForm: MessageForm,
     ) {
         messageRepository.save(
             Message(
-                user = userRepository.getReferenceById(userId),
-                title = title,
-                message = message,
+                user = user,
+                title = messageForm.title,
+                message = messageForm.message,
             ),
         )
     }

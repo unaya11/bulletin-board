@@ -1,6 +1,8 @@
 package com.bulletinboard.service
 
 import com.bulletinboard.data.Reply
+import com.bulletinboard.data.User
+import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.ReplyRepository
 import com.bulletinboard.repository.UserRepository
@@ -30,15 +32,15 @@ class ReplyService(
     }
 
     fun replySave(
-        userId: Int,
-        reply: String,
+        user: User,
+        replyForm: ReplyForm,
         messageId: Int,
     ) {
         replyRepository.save(
             Reply(
-                reply = reply,
+                reply = replyForm.reply,
                 message = messageRepository.getReferenceById(messageId),
-                user = userRepository.getReferenceById(userId),
+                user = user,
             ),
         )
     }
