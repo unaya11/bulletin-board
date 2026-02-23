@@ -16,7 +16,7 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val userId: Int? = null,
     @field:NotBlank
-    @field:Size(max = 400)
-    @Column(length = 100, nullable = false)
+    @field:Size(max = 15)
+    @Column(length = 15, nullable = false)
     val name: String = "",
 )

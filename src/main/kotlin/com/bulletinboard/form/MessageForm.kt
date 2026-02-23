@@ -1,12 +1,16 @@
 package com.bulletinboard.form
 
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 data class MessageForm(
-    @NotBlank(message = "名前を入力してください")
+    @NotBlank
+    @Size(max = 15)
     val name: String = "",
-    @NotBlank(message = "タイトルを入力してください")
+    @NotBlank
+    @Size(max = 20)
     val title: String = "",
-    @NotBlank(message = "メッセージを入力してください")
+    @NotBlank
+    @Size(max = 400)
     val message: String = "",
 )
