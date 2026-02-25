@@ -3,11 +3,9 @@ package com.bulletinboard.service
 import com.bulletinboard.common.TestUtils.Companion.mockReply1
 import com.bulletinboard.common.TestUtils.Companion.mockReply2
 import com.bulletinboard.common.TestUtils.Companion.originalPage
-import com.bulletinboard.common.TestUtils.Companion.testId
-import com.bulletinboard.common.TestUtils.Companion.testMessage
 import com.bulletinboard.common.TestUtils.Companion.testMessageDate
-import com.bulletinboard.common.TestUtils.Companion.testMessageId
 import com.bulletinboard.common.TestUtils.Companion.testPage
+import com.bulletinboard.common.TestUtils.Companion.testReplyForm
 import com.bulletinboard.common.TestUtils.Companion.testUser
 import com.bulletinboard.data.Reply
 import com.bulletinboard.repository.MessageRepository
@@ -43,9 +41,9 @@ class ReplyServiceTest {
     @Test
     fun `返信が取得でき、中身が反転されていること`() {
         whenever(
-            mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageId)),
+            mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageDate.messageId!!)),
         ).thenReturn(originalPage())
-        val result = replyService.findByReplyMessage(testPage, testMessageId)
+        val result = replyService.findByReplyMessage(testPage, testMessageDate.messageId!!)
         assertEquals(mockReply1, result.content[1])
         assertEquals(mockReply2, result.content[0])
     }
@@ -53,13 +51,12 @@ class ReplyServiceTest {
     @Test
     fun `返信が保存できること`() {
         val captor = argumentCaptor<Reply>()
-        whenever(mockMessageRepository.getReferenceById(testId)).thenReturn(testMessageDate)
-        whenever(mockUserRepository.getReferenceById(testId)).thenReturn(testUser)
+        whenever(mockMessageRepository.getReferenceById(testMessageDate.messageId!!)).thenReturn(testMessageDate)
         whenever(mockReplyRepository.save(any())).thenReturn(mockReply1)
         replyService.replySave(
-            testId,
-            reply = testMessage,
-            messageId = testId,
+            testUser,
+            testReplyForm,
+            testMessageDate.messageId!!,
         )
         verify(mockReplyRepository).save(captor.capture())
         assertEquals(mockReply1.reply, captor.firstValue.reply)

@@ -1,6 +1,5 @@
 package com.bulletinboard.service
 
-import com.bulletinboard.common.TestUtils.Companion.testName
 import com.bulletinboard.common.TestUtils.Companion.testUser
 import com.bulletinboard.data.User
 import com.bulletinboard.repository.UserRepository
@@ -25,23 +24,23 @@ class UserServiceTest {
 
     @Test
     fun `ユーザーが存在する場合、ユーザーIDが返却されること`() {
-        whenever(mockUserRepository.findByName(testName)).thenReturn(testUser)
-        val a = userService.userCheck(testName)
+        whenever(mockUserRepository.findByName(testUser.name)).thenReturn(testUser)
+        val a = userService.userCheck(testUser.name)
 
-        verify(mockUserRepository).findByName(testName)
-        assertEquals(a, testUser.userId)
+        verify(mockUserRepository).findByName(testUser.name)
+        assertEquals(a.userId, testUser.userId)
     }
 
     @Test
     fun `ユーザーが存在しない場合、ユーザーが登録されること`() {
         val captor = argumentCaptor<User>()
-        whenever(mockUserRepository.findByName(testName)).thenReturn(null)
+        whenever(mockUserRepository.findByName(testUser.name)).thenReturn(null)
         whenever(mockUserRepository.save(any())).thenReturn(testUser)
-        val a = userService.userCheck(testName)
+        val a = userService.userCheck(testUser.name)
 
-        verify(mockUserRepository).findByName(testName)
+        verify(mockUserRepository).findByName(testUser.name)
         verify(mockUserRepository).save(captor.capture())
-        assertEquals(a, testUser.userId)
-        assertEquals(testName, captor.firstValue.name)
+        assertEquals(a.userId, testUser.userId)
+        assertEquals(testUser.name, captor.firstValue.name)
     }
 }

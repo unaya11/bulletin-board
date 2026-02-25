@@ -1,13 +1,10 @@
 package com.bulletinboard.service
 
 import com.bulletinboard.common.TestUtils.Companion.mockPage
-import com.bulletinboard.common.TestUtils.Companion.testId
-import com.bulletinboard.common.TestUtils.Companion.testMessage
 import com.bulletinboard.common.TestUtils.Companion.testMessageDate
-import com.bulletinboard.common.TestUtils.Companion.testMessageId
+import com.bulletinboard.common.TestUtils.Companion.testMessageForm
 import com.bulletinboard.common.TestUtils.Companion.testPage
 import com.bulletinboard.common.TestUtils.Companion.testSearchKeyWord
-import com.bulletinboard.common.TestUtils.Companion.testTitle
 import com.bulletinboard.common.TestUtils.Companion.testUser
 import com.bulletinboard.data.Message
 import com.bulletinboard.repository.MessageRepository
@@ -47,10 +44,10 @@ class MessageServiceTest {
 
     @Test
     fun `すべての親メッセージが取得できること`() {
-        whenever(mockMessageRepository.replyMessage(testMessageId)).thenReturn(testMessageDate)
-        messageService.findByParentMessage(testMessageId)
+        whenever(mockMessageRepository.replyMessage(testMessageDate.messageId!!)).thenReturn(testMessageDate)
+        messageService.findByParentMessage(testMessageDate.messageId)
 
-        verify(mockMessageRepository).replyMessage(testMessageId)
+        verify(mockMessageRepository).replyMessage(testMessageDate.messageId)
     }
 
     @Test
@@ -66,13 +63,11 @@ class MessageServiceTest {
     @Test
     fun `メッセージが保存できること`() {
         val captor = argumentCaptor<Message>()
-        whenever(mockUserRepository.getReferenceById(testId))
-            .thenReturn(testUser)
-        messageService.messageSave(testId, testTitle, testMessage)
+        messageService.messageSave(testUser, testMessageForm)
 
         verify(mockMessageRepository).save(captor.capture())
         assertEquals(testUser, captor.firstValue.user)
-        assertEquals(testTitle, captor.firstValue.title)
-        assertEquals(testMessage, captor.firstValue.message)
+        assertEquals(testMessageDate.title, captor.firstValue.title)
+        assertEquals(testMessageDate.message, captor.firstValue.message)
     }
 }
