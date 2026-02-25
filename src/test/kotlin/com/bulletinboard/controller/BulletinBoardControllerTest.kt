@@ -58,7 +58,8 @@ class BulletinBoardControllerTest {
             .perform(
                 post(
                     "/top",
-                ).param("name", testUser.name).param("title", testMessageDate.title)
+                ).param("name", testUser.name)
+                    .param("title", testMessageDate.title)
                     .param("message", testMessageDate.message),
             ).andExpect(status().isFound)
             .andExpect(redirectedUrl("/top"))
@@ -91,7 +92,8 @@ class BulletinBoardControllerTest {
         whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
         mockMvc
             .perform(
-                post("/reply/${testMessageDate.messageId}").param("name", testUser.name)
+                post("/reply/${testMessageDate.messageId}")
+                    .param("name", testUser.name)
                     .param("reply", testMessageDate.message),
             ).andExpect(status().isFound)
             .andExpect(redirectedUrl("/reply/${testMessageDate.messageId}"))

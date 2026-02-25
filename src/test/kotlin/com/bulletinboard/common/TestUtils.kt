@@ -25,7 +25,6 @@ class TestUtils {
                 user = testUser,
                 replies = mutableListOf(),
             )
-
         val mockReply1 =
             Reply(
                 replyId = 1,
@@ -42,11 +41,6 @@ class TestUtils {
                 message = testMessageDate,
                 user = testUser,
             )
-
-        fun <T : Any> mockPage(): Page<T> = PageImpl(emptyList(), PageRequest.of(0, 1), 0)
-
-        fun originalPage(): PageImpl<Reply> = PageImpl(listOf(mockReply1, mockReply2), PageRequest.of(0, 1), 0)
-
         val testMessageForm: MessageForm =
             MessageForm(
                 name = testUser.name,
@@ -58,5 +52,9 @@ class TestUtils {
                 testUser.name,
                 testMessageDate.message,
             )
+
+        fun <T : Any> mockPage(): Page<T> = PageImpl(emptyList(), PageRequest.of(0, 1), 0)
+
+        fun originalPage(): PageImpl<Reply> = PageImpl(listOf(mockReply1, mockReply2), PageRequest.of(0, 1), 0)
     }
 }
