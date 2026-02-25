@@ -5,7 +5,6 @@ import com.bulletinboard.data.User
 import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.ReplyRepository
-import com.bulletinboard.repository.UserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
