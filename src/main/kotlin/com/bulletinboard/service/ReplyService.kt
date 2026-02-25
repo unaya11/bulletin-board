@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service
 class ReplyService(
     private val replyRepository: ReplyRepository,
     private val messageRepository: MessageRepository,
-    private val userRepository: UserRepository,
 ) {
     fun findByReplyMessage(
         pageable: Pageable,

@@ -27,9 +27,6 @@ import kotlin.test.assertEquals
 @ExtendWith(MockitoExtension::class)
 class ReplyServiceTest {
     @Mock
-    private lateinit var mockUserRepository: UserRepository
-
-    @Mock
     private lateinit var mockMessageRepository: MessageRepository
 
     @Mock
@@ -44,6 +41,7 @@ class ReplyServiceTest {
             mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageDate.messageId!!)),
         ).thenReturn(originalPage())
         val result = replyService.findByReplyMessage(testPage, testMessageDate.messageId!!)
+
         assertEquals(mockReply1, result.content[1])
         assertEquals(mockReply2, result.content[0])
     }
@@ -58,6 +56,7 @@ class ReplyServiceTest {
             testReplyForm,
             testMessageDate.messageId!!,
         )
+
         verify(mockReplyRepository).save(captor.capture())
         assertEquals(mockReply1.reply, captor.firstValue.reply)
         assertEquals(mockReply1.message, captor.firstValue.message)

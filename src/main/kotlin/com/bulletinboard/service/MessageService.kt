@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service
 @Service
 class MessageService(
     private val messageRepository: MessageRepository,
-    private val userRepository: UserRepository,
 ) {
     fun findAll(pageable: Pageable): Page<Message> = messageRepository.findAllMessage(pageable)
 

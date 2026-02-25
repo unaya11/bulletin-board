@@ -44,6 +44,7 @@ class BulletinBoardControllerTest {
     @Test
     fun `正常系_topページに遷移できること`() {
         whenever(mockMessageService.findAll(any<Pageable>())).thenReturn(mockPage())
+
         mockMvc
             .perform(get("/top"))
             .andExpect(status().isOk)
@@ -54,6 +55,7 @@ class BulletinBoardControllerTest {
     @Test
     fun `正常系_topページにリダイレクトされること`() {
         whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
+
         mockMvc
             .perform(
                 post(
@@ -63,7 +65,6 @@ class BulletinBoardControllerTest {
                     .param("message", testMessageDate.message),
             ).andExpect(status().isFound)
             .andExpect(redirectedUrl("/top"))
-
         verify(mockMessageService).messageSave(testUser, testMessageForm)
     }
 
@@ -90,6 +91,7 @@ class BulletinBoardControllerTest {
     @Test
     fun `返信ページにリダイレクトされること`() {
         whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
+
         mockMvc
             .perform(
                 post("/reply/${testMessageDate.messageId}")
@@ -105,6 +107,7 @@ class BulletinBoardControllerTest {
         whenever(
             mockMessageService.messageSearch(any<Pageable>(), eq(testMessageDate.message)),
         ).thenReturn(mockPage())
+
         mockMvc
             .perform(
                 get("/search").param("keyword", testMessageDate.message),
