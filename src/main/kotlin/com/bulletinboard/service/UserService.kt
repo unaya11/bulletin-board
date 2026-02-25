@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service
 class UserService(
     private val userRepository: UserRepository,
 ) {
-    fun userCheck(name: String): Int {
+    fun userCheck(name: String): User {
         val user =
             userRepository.findByName(name) ?: userRepository.save(
                 User(
                     name = name,
                 ),
             )
-        return user.userId!!
+        return user
     }
 }

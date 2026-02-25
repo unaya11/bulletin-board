@@ -47,8 +47,8 @@ class BulletinBoardController(
             model.addAttribute("message", message)
             return "top"
         }
-        val userId = userService.userCheck(messageForm.name)
-        messageService.messageSave(userId, messageForm.title, messageForm.message)
+        val user = userService.userCheck(messageForm.name)
+        messageService.messageSave(user, messageForm)
         return "redirect:/top"
     }
 
@@ -79,8 +79,8 @@ class BulletinBoardController(
             model.addAttribute("replyMessage", replyMessage)
             return "reply"
         }
-        val userId = userService.userCheck(replyForm.name)
-        replyService.replySave(userId, replyForm.reply, messageId)
+        val user = userService.userCheck(replyForm.name)
+        replyService.replySave(user, replyForm, messageId)
         return "redirect:/reply/$messageId"
     }
 

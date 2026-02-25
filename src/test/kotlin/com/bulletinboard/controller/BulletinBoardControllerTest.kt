@@ -1,12 +1,10 @@
 package com.bulletinboard.controller
 
 import com.bulletinboard.common.TestUtils.Companion.mockPage
-import com.bulletinboard.common.TestUtils.Companion.testId
-import com.bulletinboard.common.TestUtils.Companion.testMessage
 import com.bulletinboard.common.TestUtils.Companion.testMessageDate
-import com.bulletinboard.common.TestUtils.Companion.testMessageId
-import com.bulletinboard.common.TestUtils.Companion.testName
-import com.bulletinboard.common.TestUtils.Companion.testTitle
+import com.bulletinboard.common.TestUtils.Companion.testMessageForm
+import com.bulletinboard.common.TestUtils.Companion.testReplyForm
+import com.bulletinboard.common.TestUtils.Companion.testUser
 import com.bulletinboard.data.Message
 import com.bulletinboard.data.Reply
 import com.bulletinboard.service.MessageService
@@ -46,6 +44,7 @@ class BulletinBoardControllerTest {
     @Test
     fun `正常系_topページに遷移できること`() {
         whenever(mockMessageService.findAll(any<Pageable>())).thenReturn(mockPage())
+
         mockMvc
             .perform(get("/top"))
             .andExpect(status().isOk)
@@ -55,17 +54,18 @@ class BulletinBoardControllerTest {
 
     @Test
     fun `正常系_topページにリダイレクトされること`() {
-        whenever(mockUserService.userCheck(testName)).thenReturn(testId)
+        whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
 
         mockMvc
             .perform(
                 post(
                     "/top",
-                ).param("name", testName).param("title", testTitle).param("message", testMessage),
+                ).param("name", testUser.name)
+                    .param("title", testMessageDate.title)
+                    .param("message", testMessageDate.message),
             ).andExpect(status().isFound)
             .andExpect(redirectedUrl("/top"))
-
-        verify(mockMessageService).messageSave(testId, testTitle, testMessage)
+        verify(mockMessageService).messageSave(testUser, testMessageForm)
     }
 
     @Test
@@ -73,15 +73,15 @@ class BulletinBoardControllerTest {
         whenever(
             mockReplyService.findByReplyMessage(
                 any<Pageable>(),
-                eq(testMessageId),
+                eq(testMessageDate.messageId!!),
             ),
         ).thenReturn(mockPage())
         whenever(
-            mockMessageService.findByParentMessage(testMessageId),
+            mockMessageService.findByParentMessage(testMessageDate.messageId!!),
         ).thenReturn(testMessageDate)
 
         mockMvc
-            .perform(get("/reply/$testMessageId"))
+            .perform(get("/reply/${testMessageDate.messageId}"))
             .andExpect(status().isOk)
             .andExpect(view().name("reply"))
             .andExpect(model().attribute("parentMessage", testMessageDate))
@@ -90,26 +90,30 @@ class BulletinBoardControllerTest {
 
     @Test
     fun `返信ページにリダイレクトされること`() {
-        whenever(mockUserService.userCheck(testName)).thenReturn(testId)
+        whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
+
         mockMvc
             .perform(
-                post("/reply/$testMessageId").param("name", testName).param("reply", testMessage),
+                post("/reply/${testMessageDate.messageId}")
+                    .param("name", testUser.name)
+                    .param("reply", testMessageDate.message),
             ).andExpect(status().isFound)
-            .andExpect(redirectedUrl("/reply/$testMessageId"))
-        verify(mockReplyService).replySave(testId, testMessage, testMessageId)
+            .andExpect(redirectedUrl("/reply/${testMessageDate.messageId}"))
+        verify(mockReplyService).replySave(testUser, testReplyForm, testMessageDate.messageId!!)
     }
 
     @Test
     fun `検索ページに遷移できること`() {
         whenever(
-            mockMessageService.messageSearch(any<Pageable>(), eq(testMessage)),
+            mockMessageService.messageSearch(any<Pageable>(), eq(testMessageDate.message)),
         ).thenReturn(mockPage())
+
         mockMvc
             .perform(
-                get("/search").param("keyword", testMessage),
+                get("/search").param("keyword", testMessageDate.message),
             ).andExpect(status().isOk)
             .andExpect(view().name("search"))
             .andExpect(model().attribute("search", mockPage<Message>()))
-            .andExpect(model().attribute("keyword", testMessage))
+            .andExpect(model().attribute("keyword", testMessageDate.message))
     }
 }
