@@ -28,7 +28,7 @@ class TestUtils {
         val mockReply1 =
             Reply(
                 replyId = 1,
-                reply = "testReply1",
+                reply = "testMessage",
                 createdAt = LocalDateTime.now(),
                 message = testMessageDate,
                 user = testUser,

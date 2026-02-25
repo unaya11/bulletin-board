@@ -10,7 +10,6 @@ import com.bulletinboard.common.TestUtils.Companion.testUser
 import com.bulletinboard.data.Reply
 import com.bulletinboard.repository.MessageRepository
 import com.bulletinboard.repository.ReplyRepository
-import com.bulletinboard.repository.UserRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -40,7 +39,7 @@ class ReplyServiceTest {
         whenever(
             mockReplyRepository.findByReplyMessage(any<Pageable>(), eq(testMessageDate.messageId!!)),
         ).thenReturn(originalPage())
-        val result = replyService.findByReplyMessage(testPage, testMessageDate.messageId!!)
+        val result = replyService.findByReplyMessage(testPage, testMessageDate.messageId)
 
         assertEquals(mockReply1, result.content[1])
         assertEquals(mockReply2, result.content[0])
@@ -54,7 +53,7 @@ class ReplyServiceTest {
         replyService.replySave(
             testUser,
             testReplyForm,
-            testMessageDate.messageId!!,
+            testMessageDate.messageId,
         )
 
         verify(mockReplyRepository).save(captor.capture())
