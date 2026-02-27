@@ -53,6 +53,22 @@ class BulletinBoardControllerTest {
     }
 
     @Test
+    fun `正常系_バリデーションエラーがある場合、topページを再表示すること`() {
+        whenever(mockMessageService.findAll(any<Pageable>())).thenReturn(mockPage())
+        mockMvc
+            .perform(
+                post(
+                    "/top",
+                ).param("name", "")
+                    .param("title", testMessageDate.title)
+                    .param("message", testMessageDate.message),
+            ).andExpect(model().hasErrors())
+            .andExpect(model().attribute("message", mockPage<Message>()))
+            .andExpect(status().isOk)
+            .andExpect(view().name("top"))
+    }
+
+    @Test
     fun `正常系_topページにリダイレクトされること`() {
         whenever(mockUserService.userCheck(testUser.name)).thenReturn(testUser)
 
@@ -77,11 +93,35 @@ class BulletinBoardControllerTest {
             ),
         ).thenReturn(mockPage())
         whenever(
-            mockMessageService.findByParentMessage(testMessageDate.messageId!!),
+            mockMessageService.findByParentMessage(testMessageDate.messageId),
         ).thenReturn(testMessageDate)
 
         mockMvc
             .perform(get("/reply/${testMessageDate.messageId}"))
+            .andExpect(status().isOk)
+            .andExpect(view().name("reply"))
+            .andExpect(model().attribute("parentMessage", testMessageDate))
+            .andExpect(model().attribute("replyMessage", mockPage<Reply>()))
+    }
+
+    @Test
+    fun `バリデーションエラーがある場合、返信ページを再表示すること`() {
+        whenever(
+            mockReplyService.findByReplyMessage(
+                any<Pageable>(),
+                eq(testMessageDate.messageId!!),
+            ),
+        ).thenReturn(mockPage())
+        whenever(
+            mockMessageService.findByParentMessage(testMessageDate.messageId),
+        ).thenReturn(testMessageDate)
+
+        mockMvc
+            .perform(
+                post("/reply/${testMessageDate.messageId}")
+                    .param("name", "")
+                    .param("reply", testMessageDate.message),
+            ).andExpect(model().hasErrors())
             .andExpect(status().isOk)
             .andExpect(view().name("reply"))
             .andExpect(model().attribute("parentMessage", testMessageDate))
