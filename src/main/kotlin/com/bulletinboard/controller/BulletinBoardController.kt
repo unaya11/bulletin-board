@@ -1,11 +1,14 @@
 package com.bulletinboard.controller
 
+import com.bulletinboard.etc.CustomRetryConfig
+import com.bulletinboard.etc.ThrowException
 import com.bulletinboard.form.MessageForm
 import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
 import jakarta.validation.Valid
+import org.springframework.core.retry.RetryTemplate
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.server.ResponseStatusException
 
 @RequestMapping("/")
 @Controller
@@ -23,6 +27,7 @@ class BulletinBoardController(
     private val userService: UserService,
     private val messageService: MessageService,
     private val replyService: ReplyService,
+    private val retryConfig: CustomRetryConfig,
 ) {
     @GetMapping("top")
     fun viewTop(
@@ -30,6 +35,13 @@ class BulletinBoardController(
         model: Model,
         pageable: Pageable,
     ): String {
+        try {
+            retryConfig.a().execute {
+                ThrowException().throwException()
+            }
+        } catch (e: ResponseStatusException) {
+        }
+
         val message = messageService.findAll(pageable)
         model.addAttribute("message", message)
         return "top"
@@ -59,6 +71,13 @@ class BulletinBoardController(
         model: Model,
         pageable: Pageable,
     ): String {
+        try {
+            retryConfig.test2().execute {
+                ThrowException().throwException()
+            }
+        } catch (e: ResponseStatusException) {
+        }
+
         val replyMessage = replyService.findByReplyMessage(pageable, messageId)
         model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
         model.addAttribute("replyMessage", replyMessage)
