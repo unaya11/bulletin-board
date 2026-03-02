@@ -99,4 +99,29 @@ class CustomRetryConfig {
         retryTemplate.setRetryListener(CustomRetryListener())
         return retryTemplate
     }
+
+    // includesで再試行対象の例外を指定する。Predicateで例外の種類を確認するが、Gemini曰くこちらの方がパフォーマンスが良いとのこと
+    val b =
+        object : Predicate<Throwable> {
+            override fun test(t: Throwable): Boolean {
+                if (t !is ResponseStatusException) {
+                    return false
+                } else if (t.statusCode == HttpStatus.BAD_REQUEST || t.statusCode == HttpStatus.NOT_FOUND) {
+                    return true
+                }
+                return false
+            }
+        }
+
+    fun test5(): RetryTemplate {
+        val retryPolicy: RetryPolicy =
+            RetryPolicy
+                .builder()
+                .includes(ResponseStatusException::class.java)
+                .predicate(b)
+                .build()
+        val retryTemplate = RetryTemplate(retryPolicy)
+        retryTemplate.setRetryListener(CustomRetryListener())
+        return retryTemplate
+    }
 }
