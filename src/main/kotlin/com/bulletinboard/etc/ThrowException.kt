@@ -16,7 +16,7 @@ class ThrowException {
                 "400 Bad Request",
             )
         } else if (Math.random() < 0.8) {
-            throw RuntimeException()
+            throw RuntimeException("RuntimeException !!!!!")
         }
     }
 }
