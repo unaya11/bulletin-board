@@ -42,7 +42,7 @@ class CustomRetryListener : RetryListener {
         logger.warn("Restart Failed. Exception = {}", throwable.message)
     }
 
-    // 毎試行が完了した後に呼び出されます。
+    // 毎試行が完了した後に呼び出されます。初回の試行前にも呼び出されます。
     override fun onRetryableExecution(
         retryPolicy: RetryPolicy,
         retryable: Retryable<*>,

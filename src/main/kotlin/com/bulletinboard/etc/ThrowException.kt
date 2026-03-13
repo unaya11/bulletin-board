@@ -15,8 +15,11 @@ class ThrowException {
                 HttpStatus.BAD_REQUEST,
                 "400 Bad Request",
             )
-        } else if (Math.random() < 0.8) {
-            throw RuntimeException("RuntimeException !!!!!")
+        } else if (Math.random() < 0.99) {
+            throw ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "400 Bad Request, Too Many",
+            )
         }
     }
 }

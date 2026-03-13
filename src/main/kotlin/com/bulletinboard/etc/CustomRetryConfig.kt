@@ -132,7 +132,9 @@ class CustomRetryConfig {
             override fun test(t: Throwable): Boolean {
                 if (t::class.java == RuntimeException::class.java) {
                     return true
-                } else if (t is ResponseStatusException && (t.statusCode == HttpStatus.BAD_REQUEST || t.statusCode == HttpStatus.NOT_FOUND)) {
+                } else if (t is ResponseStatusException &&
+                    (t.statusCode == HttpStatus.BAD_REQUEST || t.statusCode == HttpStatus.NOT_FOUND)
+                ) {
                     return true
                 }
                 return false
@@ -144,7 +146,7 @@ class CustomRetryConfig {
             RetryPolicy
                 .builder()
                 .includes(RuntimeException::class.java)
-                .predicate(c)
+//                .predicate(c)
                 .build()
         val retryTemplate = RetryTemplate(retryPolicy)
         retryTemplate.setRetryListener(CustomRetryListener())

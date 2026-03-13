@@ -8,7 +8,7 @@ import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
 import jakarta.validation.Valid
-import org.springframework.core.retry.RetryTemplate
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -29,6 +29,8 @@ class BulletinBoardController(
     private val replyService: ReplyService,
     private val retryConfig: CustomRetryConfig,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @GetMapping("top")
     fun viewTop(
         @ModelAttribute messageForm: MessageForm,
@@ -36,10 +38,11 @@ class BulletinBoardController(
         pageable: Pageable,
     ): String {
         try {
-            retryConfig.a().execute {
+            retryConfig.test6().execute {
                 ThrowException().throwException()
             }
-        } catch (e: ResponseStatusException) {
+        } catch (e: Exception) {
+            logger.warn("Catch with the controller: ${e::class.simpleName}")
         }
 
         val message = messageService.findAll(pageable)
@@ -72,10 +75,11 @@ class BulletinBoardController(
         pageable: Pageable,
     ): String {
         try {
-            retryConfig.test2().execute {
+            retryConfig.test6().invoke {
                 ThrowException().throwException()
             }
-        } catch (e: ResponseStatusException) {
+        } catch (e: Exception) {
+            logger.warn("Catch with the controller: ${e::class.simpleName}")
         }
 
         val replyMessage = replyService.findByReplyMessage(pageable, messageId)
