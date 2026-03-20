@@ -1,11 +1,14 @@
 package com.bulletinboard.controller
 
+import com.bulletinboard.etc.CustomRetryConfig
+import com.bulletinboard.etc.ThrowException
 import com.bulletinboard.form.MessageForm
 import com.bulletinboard.form.ReplyForm
 import com.bulletinboard.service.MessageService
 import com.bulletinboard.service.ReplyService
 import com.bulletinboard.service.UserService
 import jakarta.validation.Valid
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.server.ResponseStatusException
 
 @RequestMapping("/")
 @Controller
@@ -23,13 +27,24 @@ class BulletinBoardController(
     private val userService: UserService,
     private val messageService: MessageService,
     private val replyService: ReplyService,
+    private val retryConfig: CustomRetryConfig,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     @GetMapping("top")
     fun viewTop(
         @ModelAttribute messageForm: MessageForm,
         model: Model,
         pageable: Pageable,
     ): String {
+        try {
+            retryConfig.test6().execute {
+                ThrowException().throwException()
+            }
+        } catch (e: Exception) {
+            logger.warn("Catch with the controller: ${e::class.simpleName}")
+        }
+
         val message = messageService.findAll(pageable)
         model.addAttribute("message", message)
         return "top"
@@ -59,6 +74,14 @@ class BulletinBoardController(
         model: Model,
         pageable: Pageable,
     ): String {
+        try {
+            retryConfig.test6().invoke {
+                ThrowException().throwException()
+            }
+        } catch (e: Exception) {
+            logger.warn("Catch with the controller: ${e::class.simpleName}")
+        }
+
         val replyMessage = replyService.findByReplyMessage(pageable, messageId)
         model.addAttribute("parentMessage", messageService.findByParentMessage(messageId))
         model.addAttribute("replyMessage", replyMessage)
