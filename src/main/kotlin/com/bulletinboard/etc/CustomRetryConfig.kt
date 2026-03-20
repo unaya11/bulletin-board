@@ -4,6 +4,8 @@ import org.springframework.core.retry.RetryPolicy
 import org.springframework.core.retry.RetryTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.server.ResponseStatusException
 import java.util.function.Predicate
 
@@ -147,6 +149,26 @@ class CustomRetryConfig {
                 .builder()
                 .includes(RuntimeException::class.java)
 //                .predicate(c)
+                .build()
+        val retryTemplate = RetryTemplate(retryPolicy)
+        retryTemplate.setRetryListener(CustomRetryListener())
+        return retryTemplate
+    }
+
+    // 結果、実務では以下のような実装とした。
+    // リトライ条件が複雑では無かったので、predicateを別に切り出す必要性も無かった
+    fun test7(): RetryTemplate {
+        val retryPolicy: RetryPolicy =
+            RetryPolicy
+                .builder()
+                .includes(
+                    RuntimeException::class.java,
+                    HttpStatusCodeException::class.java,
+                    HttpClientErrorException::class.java
+                )
+                .predicate { t ->
+                    t !is HttpClientErrorException || t.statusCode == HttpStatus.NOT_FOUND
+                }
                 .build()
         val retryTemplate = RetryTemplate(retryPolicy)
         retryTemplate.setRetryListener(CustomRetryListener())
